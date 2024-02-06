@@ -1,0 +1,286 @@
+.border
+{
+  border: 1px solid red;
+  
+}
+.border2
+{
+  border: 1px solid blue;
+}
+.border3
+{
+  border: 4px solid green;
+  
+}
+
+.messageBox
+{
+  border: 2px solid yellow;
+  height: 80%;
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* flex-direction: column; */
+}
+.innerMessageDiv
+{
+  border: 2px solid ;
+  /* display: flex;
+  flex-direction:column;
+  align-items: flex-end; */
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.owner{
+  /* justify-content: flex-end; */
+  /* background-color: red; */
+  /* align-items: flex-end; */
+  display: flex;
+  justify-content: flex-end;
+  /* height: 20px; */
+  /* width: 200px; */
+}
+
+.notowner
+{
+  
+  /* background-color: blue; */
+  /* height: 20px; */
+  /* width: 200px; */
+  display: flex;
+}
+
+.innerTextMessage
+{
+   width: 300px;
+   border: 2px solid;
+   padding: 10px 15px;
+   border-radius: 20px;
+
+}
+
+.bg{
+   background-color: beige;
+}
+
+.bg2{
+  background-color: rgb(243, 243, 80);
+}
+
+
+.outerBox
+{
+   display: flex;
+   /* height: 100vh; */
+   height: calc(100vh - 50px );
+
+   
+}
+
+.online
+{
+   flex: 0.2;
+   height: 100%;
+   overflow: scroll;
+   overflow-x: hidden;
+}
+
+.online::-webkit-scrollbar{
+  /* color: red; */
+  width:10px
+}
+.online::-webkit-scrollbar-thumb{
+  background-color: rgb(66, 66, 66);
+  border-radius: 10px;
+}
+
+.messageDiv
+{
+   flex:0.6;
+   height: 100%;
+}
+
+.textDiv
+{
+    border: 1px solid rgb(240, 10, 48);
+    height: 20%;
+    display: flex;
+}
+
+.onlines
+{
+    font-weight: 800;
+    border: 1px solid;
+    font-size: 1.4rem;
+    margin-top: 5px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+
+
+.textInput
+{
+  /* width: 80%; */
+  flex: 0.8;
+  height: 60px;
+  outline: none;
+  font-size: 16px;
+}
+
+.btn
+{
+  /* width: 17%; */
+  height: 60px;
+  flex: 0.2;
+  font-size: larger;
+  font-weight: bold;
+}
+
+
+.navHeight
+{
+   border: 1px solid;
+   height: 50px;
+   display: flex;
+   align-items: center;
+   font-weight: bold;
+   font-size: x-large;
+   text-align: center;
+}
+
+.nav1
+{
+   flex: 0.2;
+}
+.nav2
+{
+   flex: 0.6;
+}
+.nav3
+{
+   flex: 0.2;
+   cursor: pointer;
+}
+.showHide
+{
+   position: absolute;
+   top: 60px;
+   z-index: 10;
+   left: 10px;
+   background-color: wheat;
+   padding: 10px 15px;
+   font-weight: bolder;
+   border-radius: 10px;
+
+}
+
+
+
+.showHide
+{
+   display: none;
+}
+
+
+/* Login page CSSS */
+.loginMainDiv
+{
+   /* border: 1px solid red; */
+   background-color: bisque;
+   height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   
+}
+.center
+{
+   text-align: center;
+}
+
+
+.formMainDiv
+{
+  /* border: 1px solid; */
+}
+
+.formInput
+{
+   /* border: 1px solid red; */
+   margin: 10px;
+   
+}
+
+input
+{
+   font-size: 1.5rem;
+   outline: none;
+   background-color: transparent;
+   border: none;
+   border-radius: 10px;
+}
+
+
+
+.registerDiv
+{
+  font-size: larger;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+}
+
+
+.removeDec
+{
+    text-decoration: none;
+    color: black;
+}
+
+
+@media (max-width:700px)
+{
+  .messageDiv
+  {
+     /* border: 10px solid; */
+     flex: 1;
+  }
+
+  .online
+  {
+    /* flex: 0; */
+    /* transform: translateX(100%); */
+    position: absolute;
+    background-color: wheat;
+    transition: transform 0.4s;
+
+  }
+
+  .showHide
+  {
+    display: block;
+    cursor: pointer;
+  }
+
+  .onlineShow
+{
+  transform: translateX(0%);
+}
+
+.onlineHide
+{
+  transform: translateX(-100%);
+}
+
+
+  .center
+  {
+      font-size: 1.5rem;
+  }
+}
+
