@@ -1,123 +1,138 @@
-.border
-{
-  border: 1px solid red;
-  
-}
-.border2
-{
-  border: 1px solid blue;
-}
-.border3
-{
-  border: 4px solid green;
-  
-}
+
 
 .messageBox
 {
-  border: 2px solid yellow;
-  height: 80%;
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* flex-direction: column; */
+  
+  height: 85%;
+  
 }
 .innerMessageDiv
 {
-  border: 2px solid ;
-  /* display: flex;
-  flex-direction:column;
-  align-items: flex-end; */
+  
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
 }
 
 .owner{
-  /* justify-content: flex-end; */
-  /* background-color: red; */
-  /* align-items: flex-end; */
+  
   display: flex;
   justify-content: flex-end;
-  /* height: 20px; */
-  /* width: 200px; */
+  position: relative;
+  
+  
 }
 
 .notowner
 {
   
-  /* background-color: blue; */
-  /* height: 20px; */
-  /* width: 200px; */
+  position: relative;
   display: flex;
 }
 
 .innerTextMessage
 {
    width: 300px;
-   border: 2px solid;
+   
    padding: 10px 15px;
    border-radius: 20px;
+  
 
 }
 
 .bg{
-   background-color: beige;
+    background-color: #b2dbbf;;
 }
 
 .bg2{
-  background-color: rgb(243, 243, 80);
+  background-color: #a5e6b9;
+}
+.transparentt{
+   background-color: transparent;
+   
 }
 
 
 .outerBox
 {
    display: flex;
-   /* height: 100vh; */
+   
    height: calc(100vh - 50px );
 
    
+}
+
+.mm
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .online
 {
    flex: 0.2;
    height: 100%;
-   overflow: scroll;
-   overflow-x: hidden;
+   /* overflow: scroll;
+   overflow-x: hidden; */
+   background-color: #f3ffbd;
+   font-size: x-large;
+   width: 100;
+   
 }
 
-.online::-webkit-scrollbar{
-  /* color: red; */
-  width:10px
+.current
+{
+   background-color: #247ba0;
 }
-.online::-webkit-scrollbar-thumb{
-  background-color: rgb(66, 66, 66);
-  border-radius: 10px;
+
+
+
+
+
+.innerMessageDiv::-webkit-scrollbar
+{
+   width: 10px;
+}
+.innerMessageDiv::-webkit-scrollbar-thumb
+{
+    background-color:#247ba0;
+    border-radius: 10px;
 }
 
 .messageDiv
 {
    flex:0.6;
    height: 100%;
+   background-color: #70c1b3;
+   /* border: 2px solid red; */
 }
 
 .textDiv
 {
-    border: 1px solid rgb(240, 10, 48);
-    height: 20%;
+    /* border: 1px solid yellow; */
+    /* height: 20%; */
     display: flex;
 }
 
 .onlines
 {
-    font-weight: 800;
-    border: 1px solid;
+    /* font-weight: 800; */
+    border-bottom: 1px solid;
     font-size: 1.4rem;
-    margin-top: 5px;
+    margin: 8px 10px;
     padding: 10px 10px;
     cursor: pointer;
-    margin-right: 10px;
+    border-radius: 10px;
+    /* margin-right: 10px; */
+    transition: background-color 0.3s;
+    /* color: white; */
 
+}
+
+.onlines:hover
+{
+    background-color: #247ba0;
 }
 
 
@@ -128,6 +143,8 @@
   height: 60px;
   outline: none;
   font-size: 16px;
+  /* border-bottom: 1px solid; */
+  border: 1px solid #58dfc8;
 }
 
 .btn
@@ -137,18 +154,40 @@
   flex: 0.2;
   font-size: larger;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  /* border-bottom: 1px solid; */
+  border: 1px solid #58dfc8;
+}
+
+.btn:hover
+{
+   background-color: #247ba0;
+}
+
+
+.on
+{
+    padding: 2px 5px;
 }
 
 
 .navHeight
 {
-   border: 1px solid;
+   /* border: 1px solid; */
    height: 50px;
    display: flex;
    align-items: center;
-   font-weight: bold;
+   /* font-weight: bold; */
    font-size: x-large;
    text-align: center;
+   background-color: #ff1654;
+   color:white
+}
+
+.textStyle{
+    font-size: x-large;
+    /* color:white */
 }
 
 .nav1
@@ -176,6 +215,8 @@
    border-radius: 10px;
 
 }
+
+
 
 
 
@@ -252,7 +293,30 @@ input
 .onlineDIV
 {
     /* width: 100%; */
+    flex: 0.2;
+    background-color: #f3ffbd;
+    height: 100%;
 }
+
+.onlineeee
+{
+    height: 90%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    /* border: 2px solid; */
+}
+
+.onlineeee::-webkit-scrollbar
+{
+   width: 10px;
+}
+
+.onlineeee::-webkit-scrollbar-thumb
+{
+  background-color: #247ba0;
+  border-radius: 10px;
+}
+
 
 .eachOnlineMember
 {
@@ -272,6 +336,7 @@ input
 .wrapping
 {
    height: 100%;
+   /* border: 3px dotted red; */
 }
 
 .StartConver
@@ -280,13 +345,29 @@ input
     font-size: 1.5rem;
 }
 
+.absolutee
+{
+     position: absolute;
+     /* border: 1px solid; */
+     font-size: 10px;
+     bottom: -10px;
+     /* right: 0px; */
+     border-radius: 30px;
+     padding: 3px;
+}
+
 
 @media (max-width:700px)
 {
   .messageDiv
   {
      /* border: 10px solid; */
-     flex: 1;
+     flex: 0.9;
+  }
+
+  .onlineDIV
+  {
+      flex: 0.1;
   }
 
   .online
@@ -294,7 +375,7 @@ input
     /* flex: 0; */
     /* transform: translateX(100%); */
     position: absolute;
-    background-color: wheat;
+    
     transition: transform 0.4s;
 
   }
@@ -303,6 +384,13 @@ input
   {
     display: block;
     cursor: pointer;
+    background-color: #70c1b3;
+    transition: background-color 0.3s;
+  }
+
+  .showHide:hover
+  {
+    background-color: #247ba0;
   }
 
   .onlineShow
@@ -316,9 +404,32 @@ input
 }
 
 
+  .nav1
+  {
+      /* flex: 0; */
+      display: none;
+  }
+
+  .nav2
+  {
+      flex: 0.8;
+  }
+
+  .nav3
+  {
+     flex: 0.2;
+  }
+
+
   .center
   {
       font-size: 1.5rem;
+  }
+
+
+  .innerTextMessage
+  {
+      width: 180px;
   }
 }
 

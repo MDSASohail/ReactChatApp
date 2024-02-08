@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Navbar from "./Navbar";
 import { io } from 'socket.io-client'
 import axios from 'axios'
+import {format} from 'timeago.js'
 function Message()
 {  
       const scrollView=useRef();
@@ -18,7 +19,12 @@ function Message()
        const [allRegisterUsers,setAlRegisterUsers]=useState([])
       const [allLoginUsers,setAllLoginUsers]=useState([]);
       let currentCONID=useRef();
+      const [arrivedMsg,setArrivedMsg]=useState(null);
 
+      useEffect(()=>{
+        
+                arrivedMsg&&currentChatUser._id==arrivedMsg.senderId && setAllMSG((pre)=>[...pre,arrivedMsg]);
+      },[arrivedMsg])
       //It will run only one time
       //It will make connection with socket
       //It will fetch all the register users
@@ -37,7 +43,9 @@ function Message()
             
         socket.current.on("receiveMSG",(data)=>{
             // console.log("recieved data is ",data)
-            setAllMSG((pre)=>[...pre,data]);
+            // setAllMSG((pre)=>[...pre,data]);
+            console.log("Messagearrived ",data)
+            setArrivedMsg(data);
         })
 
 
@@ -161,9 +169,12 @@ function Message()
         <Navbar/>
           <div className="border outerBox">
           {!show&&<div className="showHide" onClick={()=>{setShow(!show)}}>Show</div>}
-             <div onClick={()=>{setShow(!show)}}  className={show?"border2 online onlineShow":"border2 online onlineHide"}>
-                
-                {allRegisterUsers.map((item,index)=><p onClick={()=>{setCurrentChatUser(item); console.log("Current Chat user is ",currentChatUser)}} key={index} className="onlines">{item.fullName}</p>)}
+              
+             <div  className={show?"border2 online textStyle onlineShow":"border2 textStyle online onlineHide"}>
+              <div className="textStyle mm">All Register Users</div>
+                <div className="onlineeee">
+                {allRegisterUsers.map((item,index)=><p onClick={()=>{setCurrentChatUser(item);setShow(!show); }} key={index} className={currentChatUser?._id===item._id?"onlines current":"onlines"}>{item.fullName}</p>)}
+                </div>
 
              </div>
              <div className="border3 messageDiv">
@@ -173,14 +184,17 @@ function Message()
                       </div>
                 </div>
                 <div  className="textDiv">
-                      <textarea ref={currentMSG} value={currentText} onChange={(e)=>{setCurrentText(e.target.value)}} className="textInput"></textarea>
-                      <button className="btn" onClick={(e)=>{handleSubmit(e)}}>Send</button>
+                      <textarea ref={currentMSG} value={currentText} onChange={(e)=>{setCurrentText(e.target.value)}} className="textInput transparentt"></textarea>
+                      <button className="btn  transparentt" onClick={(e)=>{handleSubmit(e)}}>Send</button>
                 </div></div>:<p className="StartConver">Select a conversation</p>}
              </div>
              <div className="onlineDIV">
                 {/* {notice.map((item,index)=><div><EachMessage key={index} item={item}/></div>)} */}
                 <div className="onlineLogo">Online Members</div>
-                {allLoginUsers.map((user,index)=><p onClick={()=>{setCurrentChatUser(user);console.log("Current chat user is ",currentChatUser)}} className="eachOnlineMember" key={index}>{user.fullName}</p>)}
+                <div className="onlineeee">
+                {allLoginUsers.map((user,index)=><p onClick={()=>{setCurrentChatUser(user);console.log("Current chat user is ",currentChatUser)}} className={currentChatUser?._id===user._id?"onlines current":"onlines"} key={index}>{user.fullName}</p>)}
+                </div>
+                
              </div>
           </div>
         </>
@@ -196,6 +210,7 @@ function EachMessage({item,user})
         <>
            <div className={item.senderId==user?"owner":"notowner"}>
            <p className={item.senderId==user?"innerTextMessage bg":"innerTextMessage bg2"} >{item.text}</p>
+           <p className={item.senderId==user?" absolutee bg":"absolutee bg2"} >{format(item.createdAt)}</p>
            </div>
         </>
     )

@@ -8,7 +8,7 @@ function Navbar() {
   return (
     <div className='navHeight'>
       <div className='nav1'>
-        Online Members
+        MDSA
       </div>
       <div className='nav2'>
        Welcome {user?.fullName}
