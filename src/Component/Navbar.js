@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function Navbar() {
   const navigate=useNavigate();
   const user=JSON.parse(localStorage.getItem("user"))|| null;
-  console.log("User in navbar is ",user)
+  // console.log("User in navbar is ",user)
   return (
     <div className='navHeight'>
       <div className='nav1'>

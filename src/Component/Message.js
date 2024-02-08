@@ -5,8 +5,7 @@ import axios from 'axios'
 function Message()
 {  
       const scrollView=useRef();
-      const onlinFriends=["Sohail","Iklakh","Imamuddin","Danish","Farhan","Faisal","Sohail","Iklakh","Imamuddin","Danish","Farhan","Faisal"]
-      const msg=[{text:"This is Sohail",isOwner:true},{text:"Hello Sohail",isOwner:false},{text:"Hello",isOwner:true},{text:"Where r u?",isOwner:true},{text:"Siwan",isOwner:false},{text:"And You",isOwner:false},{text:"This is Sohail",isOwner:true},{text:"Hello Sohail",isOwner:false},{text:"Hello",isOwner:true},{text:"Where r u?",isOwner:true},{text:"Siwan",isOwner:false},{text:"And You",isOwner:false},{text:"This is Sohail",isOwner:true},{text:"Hello Sohail",isOwner:false},{text:"Hello",isOwner:true},{text:"Where r u?",isOwner:true},{text:"Siwan",isOwner:false},{text:"And You",isOwner:false}]
+      
       const currentMSG=useRef();
       const [currentText,setCurrentText]=useState("");
       const [notice,setNotice]=useState([{text:"Hello"}]);
@@ -18,7 +17,7 @@ function Message()
       // const user=[{_id:20}]
        const [allRegisterUsers,setAlRegisterUsers]=useState([])
       const [allLoginUsers,setAllLoginUsers]=useState([]);
-
+      let currentCONID=useRef();
 
       //It will run only one time
       //It will make connection with socket
@@ -35,12 +34,18 @@ function Message()
 
             getAllregis();
 
+            
+        socket.current.on("receiveMSG",(data)=>{
+            // console.log("recieved data is ",data)
+            setAllMSG((pre)=>[...pre,data]);
+        })
+
 
             if (user) {
                 socket.current.emit("addUser", user._id,user.fullName);
-                console.log("In mess user is ", user);
+                // console.log("In mess user is ", user);
                 socket.current.on("getUsers", (users) => {
-                    console.log("All users are ", users);
+                    // console.log("All users are ", users);
                     
                     setAllLoginUsers(users);
                 });
@@ -52,7 +57,7 @@ function Message()
             }
 
            return () => {
-            console.log("Cleaning up socket connection...");
+            // console.log("Cleaning up socket connection...");
             socket.current.disconnect();
             socket.current.off("getUsers");
         };
@@ -71,28 +76,7 @@ function Message()
         }
 
     }
-    //   useEffect(() => {
-    //      console.log("User change")
-    //      if (user) {
-    //          socket.current.emit("addUser", user._id,user.fullName);
-    //          console.log("In mess user is ", user);
-    //          socket.current.on("getUsers", (users) => {
-    //              console.log("All users are ", users);
-                 
-    //              setAllLoginUsers(users);
-    //          });
-
-             
-            
-
-    //         fetchallConversationId();
-    //      }
-     
-    //      return () => {
-    //          // Clean up event listener when the component unmounts
-    //          socket.current.off("getUsers");
-    //      };
-    //  }, []);
+    
 
 
     //It will scroll to the view area
@@ -107,13 +91,21 @@ function Message()
                     //  console.log("In useEffect currentChat user is ",currentChatUser)
                  if(allConversationId.some((item)=>item.members[0]===currentChatUser._id || item.members[1]===currentChatUser._id || currentChatUser.userId===item.members[0] || currentChatUser.userId===item.members[1]))
                  {
-                      console.log("Ype already conversation")
-                      const conId=allConversationId.find((item)=>item.members[0]!==user._id || item.members[1]!==user._id)
+                      // console.log("Ype already conversation ",allConversationId,user)
+                      // console.log("User is ",user)
+                      // console.log("Current chat user",currentChatUser)
+                      const conId=allConversationId.find((item)=>(item.members[0]===user._id && item.members[1]===currentChatUser._id)||(item.members[1]===user._id && item.members[0]===currentChatUser._id))
+                      // console.log("Current conversation id is ",conId)
                       try {
                                  const fetmessages=async()=>{
                                          const d=await axios.get(`http://localhost:8000/message/${conId._id}`)
                                          setAllMSG(d.data)
-                                         console.log("All msg of a particura ",d.data)
+                                        //  console.log("All msg of a particura ",d.data)
+                                        //  console.log("Current conversation id is ",conId)
+                                         currentCONID.current=conId._id;
+                                        //  console.log(currentCONID.current)
+                                         //65c397f6bd03cded68656fa1
+                                         //65c397f6bd03cded68656fa1
                                  }
 
                                  fetmessages();
@@ -127,13 +119,13 @@ function Message()
                     //    console.log("All conversation id is ",allConversationId)
                 }else
                  {
-                      console.log("Making new conversation")
+                      // console.log("Making new conversation")
                       try{
                              const make=async()=>{
 
                                 
                                  const m= await axios.post('http://localhost:8000/con/',{member1:user._id,member2:currentChatUser._id})
-                                 console.log("Conversation succes ",m.data)
+                                //  console.log("Conversation succes ",m.data)
                                  fetchallConversationId();
 
                              }
@@ -146,12 +138,22 @@ function Message()
                  }
       },[currentChatUser])
 
-      const handleSubmit=(e)=>{
+      const handleSubmit=async(e)=>{
         e.preventDefault();
-        setAllMSG((pre)=>[...pre,{text:currentMSG.current.value,isOwner:false}])
-        console.log("Vlaue is ",currentMSG.current.value)
-        setCurrentText("");
+        const data={conversationId:currentCONID.current,receiverId:currentChatUser._id,senderId:user._id,text:currentText};
+        socket.current.emit("saveMSG",data);
+
+        try {
+            
+            const d=await axios.post('http://localhost:8000/message/post',data);
+            // console.log("Save Message is ",d.data)
+        } catch (error) {
+          console.log("Error in saving message ",error.response.data.result)
+        }
+        setAllMSG((pre)=>[...pre,{text:currentMSG.current.value,senderId:user._id}])
+        // console.log("Vlaue is ",currentMSG.current.value)
         
+        setCurrentText("");
       }
       const [show,setShow]=useState(false)
       return(
@@ -167,7 +169,7 @@ function Message()
              <div className="border3 messageDiv">
                 {allMessages?<div className="wrapping"><div className="messageBox">
                       <div className="innerMessageDiv" >
-                      {allMessages.map((item,index)=><div key={index} ref={scrollView}><EachMessage  item={item}/></div>)}
+                      {allMessages.map((item,index)=><div key={index} ref={scrollView}><EachMessage  item={item} user={user._id}/></div>)}
                       </div>
                 </div>
                 <div  className="textDiv">
@@ -186,12 +188,14 @@ function Message()
 }
 
 
-function EachMessage({item})
+function EachMessage({item,user})
 {
+
+  // console.log("Each message is ",user)
     return(
         <>
-           <div className={item.isOwner?"owner":"notowner"}>
-           <p className={item.isOwner?"innerTextMessage bg":"innerTextMessage bg2"} >{item.text}</p>
+           <div className={item.senderId==user?"owner":"notowner"}>
+           <p className={item.senderId==user?"innerTextMessage bg":"innerTextMessage bg2"} >{item.text}</p>
            </div>
         </>
     )
