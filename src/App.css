@@ -12,6 +12,7 @@
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  z-index: -1;
 }
 
 .owner{
@@ -85,6 +86,8 @@
 {
    background-color: #247ba0;
 }
+
+
 
 
 
@@ -375,7 +378,7 @@ input
     /* flex: 0; */
     /* transform: translateX(100%); */
     position: absolute;
-    
+    z-index: 10;
     transition: transform 0.4s;
 
   }

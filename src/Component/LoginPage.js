@@ -23,7 +23,7 @@ function LoginPage() {
         }
         
         try {
-          const data=await axios.post('http://localhost:8000/user/get',userData);
+          const data=await axios.post('https://chat-app-node-gamma.vercel.app/user/get',userData);
           // console.log(data.data)
           localStorage.setItem("user",JSON.stringify(data.data));
           navigate('/') //Navigating to the home page

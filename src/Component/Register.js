@@ -29,7 +29,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
         try {
-            const savedData=await axios.post('http://localhost:8000/user/',data);
+            const savedData=await axios.post('https://chat-app-node-gamma.vercel.app/user/',data);
             // console.log("Saved data is ",savedData.data)
             localStorage.setItem("user",JSON.stringify(savedData.data))
             navigate('/')

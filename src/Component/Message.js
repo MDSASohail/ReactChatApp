@@ -30,10 +30,11 @@ function Message()
       //It will fetch all the register users
       //If user, it will raise an event to add the user and receive the getUsers event
       useEffect(()=>{
-           socket.current=io("ws://localhost:8001")
-        //    console.log("Socket is ",socket.current)
+          //  socket.current=io("ws://localhost:8000")
+          socket.current = io("https://chat-app-node-gamma.vercel.app/");
+           console.log("Socket is ",socket.current)
             const getAllregis=async()=>{
-                const allRegister=await axios.get('http://localhost:8000/user/');
+                const allRegister=await axios.get('https://chat-app-node-gamma.vercel.app/user/');
                 // console.log("Register users are ",allRegister.data)
                 setAlRegisterUsers(allRegister.data)
             }
@@ -48,13 +49,14 @@ function Message()
             setArrivedMsg(data);
         })
 
-
+          //  console.log("Before if ",allLoginUsers,user)
             if (user) {
+              // console.log("enter in if")
                 socket.current.emit("addUser", user._id,user.fullName);
                 // console.log("In mess user is ", user);
                 socket.current.on("getUsers", (users) => {
                     // console.log("All users are ", users);
-                    
+                    // console.log("AllLoginUsers is ",allLoginUsers)
                     setAllLoginUsers(users);
                 });
    
@@ -68,6 +70,7 @@ function Message()
             // console.log("Cleaning up socket connection...");
             socket.current.disconnect();
             socket.current.off("getUsers");
+            
         };
            
       },[])
@@ -75,7 +78,7 @@ function Message()
 //It is a function which will fetch all the conversation of a particular user
       const fetchallConversationId=async()=>{
         try{
-                    const me=await axios.get(`http://localhost:8000/con/${user._id}`)
+                    const me=await axios.get(`https://chat-app-node-gamma.vercel.app/con/${user._id}`)
                     // console.log("Conversation ids is ",me.data);
                     setAllconversationId(me.data)
         }catch(error)
@@ -106,7 +109,7 @@ function Message()
                       // console.log("Current conversation id is ",conId)
                       try {
                                  const fetmessages=async()=>{
-                                         const d=await axios.get(`http://localhost:8000/message/${conId._id}`)
+                                         const d=await axios.get(`https://chat-app-node-gamma.vercel.app/message/${conId._id}`)
                                          setAllMSG(d.data)
                                         //  console.log("All msg of a particura ",d.data)
                                         //  console.log("Current conversation id is ",conId)
@@ -132,7 +135,7 @@ function Message()
                              const make=async()=>{
 
                                 
-                                 const m= await axios.post('http://localhost:8000/con/',{member1:user._id,member2:currentChatUser._id})
+                                 const m= await axios.post('https://chat-app-node-gamma.vercel.app/con/',{member1:user._id,member2:currentChatUser._id})
                                 //  console.log("Conversation succes ",m.data)
                                  fetchallConversationId();
 
@@ -153,7 +156,7 @@ function Message()
 
         try {
             
-            const d=await axios.post('http://localhost:8000/message/post',data);
+            const d=await axios.post('https://chat-app-node-gamma.vercel.app/message/post',data);
             // console.log("Save Message is ",d.data)
         } catch (error) {
           console.log("Error in saving message ",error.response.data.result)

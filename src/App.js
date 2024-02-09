@@ -14,8 +14,12 @@ function App() {
  useEffect(()=>{
                 if(user==null)
                 navigate('/login')
+                else
+                navigate('/')
+
                 
- },[user])
+                
+ },[])
   return (
     <div >
       <Routes>
