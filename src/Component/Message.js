@@ -30,8 +30,11 @@ function Message()
       //It will fetch all the register users
       //If user, it will raise an event to add the user and receive the getUsers event
       useEffect(()=>{
-          //  socket.current=io("ws://localhost:8000")
-          socket.current = io("https://chat-app-node-gamma.vercel.app/");
+           socket.current=io("ws://localhost:8000", {
+            credentials: true,
+            allowedHeaders: ["Content-Type", "Authorization"]
+          })
+          // socket.current = io("https://chat-app-node-gamma.vercel.app/");
            console.log("Socket is ",socket.current)
             const getAllregis=async()=>{
                 const allRegister=await axios.get('https://chat-app-node-gamma.vercel.app/user/');
