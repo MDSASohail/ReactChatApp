@@ -10,13 +10,12 @@ import { Link, useNavigate } from 'react-router-dom';
     const fullName=useRef();
     const handle=async(e)=>{
         e.preventDefault();
-        // console.log(password.current.value)
-        //     console.log(passwordAgain.current.value)
+        
 
         
         if(password.current.value!==passwordAgain.current.value)
         {
-            // console.log("Password Not same")
+            
             alert("Password must be same")
             return;
         }
@@ -29,7 +28,12 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
         try {
-            const savedData=await axios.post('https://chat-app-node-gamma.vercel.app/user/',data);
+
+          //Deployed
+            // const savedData=await axios.post('https://chat-app-node-gamma.vercel.app/user/',data);
+
+            //Local
+            const savedData=await axios.post('http://localhost:8000/user/',data);
             // console.log("Saved data is ",savedData.data)
             localStorage.setItem("user",JSON.stringify(savedData.data))
             navigate('/')

@@ -30,39 +30,48 @@ function Message()
       //It will fetch all the register users
       //If user, it will raise an event to add the user and receive the getUsers event
       useEffect(()=>{
-          //  socket.current=io("ws://localhost:8000", {
-          //   credentials: true,
-          //   allowedHeaders: ["Content-Type", "Authorization"]
-          // })
-          socket.current = io("https://chat-app-node-gamma.vercel.app/", {
-            withCredentials: true,
+
+        //Connect with local host
+           socket.current=io("ws://localhost:8000", {
+            credentials: true,
             allowedHeaders: ["Content-Type", "Authorization"]
-          });
-           console.log("Socket is ",socket.current)
+          })
+
+          //Connect with deployed Node
+          // socket.current = io("https://chat-app-node-gamma.vercel.app/", {
+          //   withCredentials: true,
+          //   allowedHeaders: ["Content-Type", "Authorization"]
+          // });
+           
             const getAllregis=async()=>{
-                const allRegister=await axios.get('https://chat-app-node-gamma.vercel.app/user/');
-                // console.log("Register users are ",allRegister.data)
+               try {
+                //Deployed link
+                // const allRegister=await axios.get('https://chat-app-node-gamma.vercel.app/user/');
+
+                //Local
+                const allRegister=await axios.get('http://localhost:8000/user/');
                 setAlRegisterUsers(allRegister.data)
+               } catch (error) {
+                console.log("Error in fetching all registerd users")
+               }
             }
 
             getAllregis();
 
             
         socket.current.on("receiveMSG",(data)=>{
-            // console.log("recieved data is ",data)
-            // setAllMSG((pre)=>[...pre,data]);
+            
             console.log("Messagearrived ",data)
             setArrivedMsg(data);
         })
 
-          //  console.log("Before if ",allLoginUsers,user)
+          
             if (user) {
-              // console.log("enter in if")
+              
                 socket.current.emit("addUser", user._id,user.fullName);
-                // console.log("In mess user is ", user);
+                
                 socket.current.on("getUsers", (users) => {
-                    // console.log("All users are ", users);
-                    // console.log("AllLoginUsers is ",allLoginUsers)
+                    
                     setAllLoginUsers(users);
                 });
    
@@ -73,7 +82,7 @@ function Message()
             }
 
            return () => {
-            // console.log("Cleaning up socket connection...");
+            
             socket.current.disconnect();
             socket.current.off("getUsers");
             
@@ -81,12 +90,16 @@ function Message()
            
       },[])
 
-//It is a function which will fetch all the conversation of a particular user
+
       const fetchallConversationId=async()=>{
         try{
-                    const me=await axios.get(`https://chat-app-node-gamma.vercel.app/con/${user._id}`)
-                    // console.log("Conversation ids is ",me.data);
+                    //Deployed
+                    // const me=await axios.get(`https://chat-app-node-gamma.vercel.app/con/${user._id}`)
+                    
+                    //Local
+                    const me=await axios.get(`http://localhost:8000/con/${user._id}`)
                     setAllconversationId(me.data)
+                    
         }catch(error)
         {
             console.log("Error in fetching message ",error.message)
@@ -103,26 +116,23 @@ function Message()
       },[allMessages])
 
       useEffect(()=>{
-                    //  console.log("All conversation id is ",allConversationId);
-                    //  allConversationId.map((item)=>{console.log(item.members[0])})
-                    //  console.log("In useEffect currentChat user is ",currentChatUser)
-                 if(allConversationId.some((item)=>item.members[0]===currentChatUser._id || item.members[1]===currentChatUser._id || currentChatUser.userId===item.members[0] || currentChatUser.userId===item.members[1]))
+                                                
+                 if(allConversationId.some((item)=>item.members[0]===currentChatUser._id || item.members[1]===currentChatUser._id ))
                  {
-                      // console.log("Ype already conversation ",allConversationId,user)
-                      // console.log("User is ",user)
-                      // console.log("Current chat user",currentChatUser)
+                      
                       const conId=allConversationId.find((item)=>(item.members[0]===user._id && item.members[1]===currentChatUser._id)||(item.members[1]===user._id && item.members[0]===currentChatUser._id))
-                      // console.log("Current conversation id is ",conId)
+                      
                       try {
                                  const fetmessages=async()=>{
-                                         const d=await axios.get(`https://chat-app-node-gamma.vercel.app/message/${conId._id}`)
+                                        //Deployed
+                                        //  const d=await axios.get(`https://chat-app-node-gamma.vercel.app/message/${conId._id}`);
+
+                                         //Local
+                                         const d=await axios.get(`http://localhost:8000/message/${conId._id}`);
                                          setAllMSG(d.data)
-                                        //  console.log("All msg of a particura ",d.data)
-                                        //  console.log("Current conversation id is ",conId)
+                                        
                                          currentCONID.current=conId._id;
-                                        //  console.log(currentCONID.current)
-                                         //65c397f6bd03cded68656fa1
-                                         //65c397f6bd03cded68656fa1
+                                        
                                  }
 
                                  fetmessages();
@@ -132,17 +142,19 @@ function Message()
 
                     }
                         
-                    //    console.log("Conversation id iss ",conId._id)
-                    //    console.log("All conversation id is ",allConversationId)
+                    
                 }else
                  {
-                      // console.log("Making new conversation")
+                      
                       try{
                              const make=async()=>{
 
+                                //Deployed
+                                //  const m= await axios.post('https://chat-app-node-gamma.vercel.app/con/',{member1:user._id,member2:currentChatUser._id});
+
+                                 //Local
+                                 const m= await axios.post('http://localhost:8000/con/',{member1:user._id,member2:currentChatUser._id})
                                 
-                                 const m= await axios.post('https://chat-app-node-gamma.vercel.app/con/',{member1:user._id,member2:currentChatUser._id})
-                                //  console.log("Conversation succes ",m.data)
                                  fetchallConversationId();
 
                              }
@@ -162,13 +174,17 @@ function Message()
 
         try {
             
-            const d=await axios.post('https://chat-app-node-gamma.vercel.app/message/post',data);
-            // console.log("Save Message is ",d.data)
+          //Deployed
+            // const d=await axios.post('https://chat-app-node-gamma.vercel.app/message/post',data);
+
+            //Local
+            const d=await axios.post('http://localhost:8000/message/post',data);
+            
         } catch (error) {
           console.log("Error in saving message ",error.response.data.result)
         }
         setAllMSG((pre)=>[...pre,{text:currentMSG.current.value,senderId:user._id}])
-        // console.log("Vlaue is ",currentMSG.current.value)
+       
         
         setCurrentText("");
       }
