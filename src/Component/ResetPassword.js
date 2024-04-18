@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { useNavigate } from 'react-router-dom';
 function ResetPassword() {
-    const [error,setEror]=useState(true);
+    const [error,setEror]=useState(false);
     const [passwordGen,setPasswordGen]=useState(false);
     const [errerInverify,setErrorInvafy]=useState(false)
     const [newPassword,setNewPassword]=useState(false);
@@ -15,6 +15,7 @@ function ResetPassword() {
      const navigate=useNavigate();
    async function varify()
     {
+          setErrorInvafy(false)
              if(inputOTP.current.value==OTPGEN)
              {
                 //    console.log("Password is correct")
@@ -42,6 +43,28 @@ function ResetPassword() {
         // console.log(sessionStorage.getItem("toSaveEmail"),newEnterPass.current.value)
     }
 
+
+   async function isEmailPresent(e)
+    {
+
+      e.preventDefault();
+        console.log("In is emailPresent")
+        try {
+                     const user=await axios.post('http://localhost:8000/user/findUser',{email:email.current.value});
+                     if(user.data.result)
+                     {
+                        // console.log("User found can send message")
+                        sendEmail(e);
+                     }else
+                     {
+                        // console.log("User Cannot found cant send message");
+                        setEror(true)
+                     }
+        } catch (error) {
+           console.log("Error in finding user",error)
+        }
+    }
+
     const sendEmail =async (e) => {
         e.preventDefault();
          
@@ -65,12 +88,14 @@ function ResetPassword() {
       };
   return (
     <div className='loginMainDiv'>
-              {!passwordGen && !newPassword&& <form className='bg-red-400 p-4 rounded-lg'  onSubmit={sendEmail}>
+              {!passwordGen && !newPassword&& <form className='bg-red-400 p-4 rounded-lg'  onSubmit={isEmailPresent}>
                  
                  <div className='border-2 p-1 rounded-lg'>
                         <label><strong>Email</strong></label>
                         <input ref={email} type="email" className='bg p-2 m-2' />
                  </div>
+
+                 {error && <p>User Does't exist</p>}
       
                   <input type="submit" value="Send" className='p-2 bg m-3' />
     </form>}
