@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom';
  function Register() {
-
+    const [error,setError]=useState(false);
     const email=useRef();
     const password=useRef();
     const passwordAgain=useRef();
@@ -25,7 +25,7 @@ import { Link, useNavigate } from 'react-router-dom';
              email:email.current.value,
              password:password.current.value
         }
-
+          setError(false)
 
         try {
 
@@ -38,7 +38,11 @@ import { Link, useNavigate } from 'react-router-dom';
             localStorage.setItem("user",JSON.stringify(savedData.data))
             navigate('/')
         } catch (error) {
-            console.log(error.message)
+            
+          // console.log("error in creating user")
+          setError(error.response.data.result)
+            // console.log(error.response.data.result)
+            
         }
     }
   return (
@@ -62,6 +66,9 @@ import { Link, useNavigate } from 'react-router-dom';
                 
                 <input type='password' ref={passwordAgain} placeholder='Conform Password' />
             </div>
+            { error && <div> 
+               <p>Email already exist</p>
+            </div>}
             <button type='submit' className='registerDiv'>Register</button>
             <Link to={'/login'} className='removeDec'>
               <div className='registerDiv'>Sing In</div>

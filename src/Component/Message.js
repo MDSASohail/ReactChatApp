@@ -188,7 +188,27 @@ function Message()
         
         setCurrentText("");
       }
-      const [show,setShow]=useState(false)
+      const [show,setShow]=useState(false);
+
+
+     async function deleteChats()
+      {
+              //  console.log(" To delete Chats ",currentCONID.current)
+              //  console.log("Deletted conversations ",allMessages);
+
+          try {
+            // console.log("In try")
+            const deleteData = await axios.post('http://localhost:8000/message/delete',{
+               data:{conversationId:currentCONID.current}
+            });
+            // const d=await axios.post('http://localhost:8000/message/post',{helo:"Sohail"});
+            setAllMSG(null);
+                // console.log("Deletted conversations ",allMessages);
+          } catch (error) {
+            console.log("Error in deleting conversation",error)
+          }
+          //  console.log("Current chat data is ",currentChatUser._id,user._id,currentCONID)
+      }
       return(
         <>
         <Navbar/>
@@ -215,12 +235,18 @@ function Message()
              </div>
              <div className="onlineDIV">
                 {/* {notice.map((item,index)=><div><EachMessage key={index} item={item}/></div>)} */}
+                {allMessages && <div>
+                      <button onClick={deleteChats} className="p-2 m-2 border-2">Delete Chats</button >
+                  </div>}
                 <div className="onlineLogo">Online Members</div>
                 <div className="onlineeee">
+                  
                 {allLoginUsers.map((user,index)=><p onClick={()=>{setCurrentChatUser(user);console.log("Current chat user is ",currentChatUser)}} className={currentChatUser?._id===user._id?"onlines current":"onlines"} key={index}>{user.fullName}</p>)}
                 </div>
                 
              </div>
+
+             
           </div>
         </>
     )
@@ -233,7 +259,7 @@ function EachMessage({item,user})
   // console.log("Each message is ",user)
     return(
         <>
-           <div className={item.senderId==user?"owner":"notowner"}>
+           <div className={item.senderId==user?"owner m-2":"notowner m-2"}>
            <p className={item.senderId==user?"innerTextMessage bg":"innerTextMessage bg2"} >{item.text}</p>
            <p className={item.senderId==user?" absolutee bg":"absolutee bg2"} >{format(item.createdAt)}</p>
            </div>
